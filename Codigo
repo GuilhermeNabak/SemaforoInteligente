@@ -5,6 +5,7 @@ int led2 = 3;
 int led3 = 4;
 int led4 = 6;
 int led5 = 7;
+int buzzer = A1;  // Usando o pino A1 para o buzzer
 
 // Pinos do display de sete segmentos
 int segA = 8;
@@ -23,6 +24,7 @@ void setup() {
   pinMode(led3, OUTPUT);
   pinMode(led4, OUTPUT);
   pinMode(led5, OUTPUT);
+  pinMode(buzzer, OUTPUT);  // Configurando o pino do buzzer como saída
 
   // Inicializando pinos do display de sete segmentos
   pinMode(segA, OUTPUT);
@@ -52,6 +54,9 @@ void loop() {
     digitalWrite(led1, HIGH); // LED vermelho para carros
     digitalWrite(led5, HIGH); // LED verde para pedestres
 
+    // Emitir som ao abrir sinal de pedestres
+    tone(buzzer, 1000, 500); 
+
     // Contagem regressiva
     for (int i = 8; i >= 0; i--) {
       mostrarNumero(i);
@@ -61,22 +66,25 @@ void loop() {
     digitalWrite(led5, LOW); // LED verde para pedestres apagado
     digitalWrite(led4, HIGH); // LED vermelho para pedestres aceso
     digitalWrite(led1, LOW); // LED vermelho para carros apagado
+
+    // Emitir som ao fechar sinal de pedestres
+    tone(buzzer, 400, 250); 
   }
 }
 
 void mostrarNumero(int num) {
   // Tabela de segmentos para cada número (0-9)
   bool numeros[10][7] = {
-    {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, LOW},  // 0
-    {LOW, HIGH, HIGH, LOW, LOW, LOW, LOW},      // 1
-    {HIGH, HIGH, LOW, HIGH, HIGH, LOW, HIGH},   // 2
-    {HIGH, HIGH, HIGH, HIGH, LOW, LOW, HIGH},   // 3
-    {LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH},    // 4
-    {HIGH, LOW, HIGH, HIGH, LOW, HIGH, HIGH},   // 5
-    {HIGH, LOW, HIGH, HIGH, HIGH, HIGH, HIGH},  // 6
-    {HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW},     // 7
-    {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH}, // 8
-    {HIGH, HIGH, HIGH, HIGH, LOW, HIGH, HIGH}   // 9
+    {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, LOW}, 
+    {LOW, HIGH, HIGH, LOW, LOW, LOW, LOW},      
+    {HIGH, HIGH, LOW, HIGH, HIGH, LOW, HIGH},  
+    {HIGH, HIGH, HIGH, HIGH, LOW, LOW, HIGH},  
+    {LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH},   
+    {HIGH, LOW, HIGH, HIGH, LOW, HIGH, HIGH},   
+    {HIGH, LOW, HIGH, HIGH, HIGH, HIGH, HIGH},
+    {HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW},     
+    {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH},
+    {HIGH, HIGH, HIGH, HIGH, LOW, HIGH, HIGH}   
   };
 
   // Definir os pinos do display de acordo com o número
