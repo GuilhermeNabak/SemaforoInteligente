@@ -1,5 +1,15 @@
 -----
+
 # Relatório do Projeto: Semáforo Inteligente
+
+Link do projeto: https://www.tinkercad.com/things/1wYMIABaMs2-semaforo-inteligente
+
+-----
+
+# Introdução
+
+- Este projeto simula um semáforo inteligente utilizando a plataforma Tinkercad. São mostrados dois sinais, um para carros e outro para pedestres simulando um estrada. Ao pressionar o botão, o sinal de de carros fecha e o de pedestres abre, permitido que atravessem em segurança. Enquanto o sinal de carros ficar fechado, um contador é inciado mostrando quanto tempo falta para abrir novamente, com o incremento de um alerta sonoro.
+
 -----
 
 # Planejamento
