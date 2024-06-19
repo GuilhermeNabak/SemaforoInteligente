@@ -1,0 +1,116 @@
+int chave = 5;
+int val = 0;
+int led1 = 2;
+int led2 = 3;
+int led3 = 4;
+int led4 = 6;
+int led5 = 7;
+
+// Pinos do display de sete segmentos
+int segA = 8;
+int segB = 9;
+int segC = 10;
+int segD = 11;
+int segE = 12;
+int segF = 13;
+int segG = A0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(chave, INPUT);
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(led4, OUTPUT);
+  pinMode(led5, OUTPUT);
+
+  // Inicializando pinos do display de sete segmentos
+  pinMode(segA, OUTPUT);
+  pinMode(segB, OUTPUT);
+  pinMode(segC, OUTPUT);
+  pinMode(segD, OUTPUT);
+  pinMode(segE, OUTPUT);
+  pinMode(segF, OUTPUT);
+  pinMode(segG, OUTPUT);
+
+  // Teste inicial para acender todos os segmentos
+  testeDisplay();
+}
+
+void loop() {
+  val = digitalRead(chave);
+  digitalWrite(led3, HIGH); // LED verde para carros
+  digitalWrite(led4, HIGH); // LED vermelho para pedestres
+
+  if (val == HIGH) {
+    delay(1000);
+    digitalWrite(led3, LOW); // LED verde para carros apagado
+    digitalWrite(led2, HIGH); // LED amarelo para carros
+    delay(3000);
+    digitalWrite(led2, LOW); // LED amarelo para carros apagado
+    digitalWrite(led4, LOW); // LED vermelho para pedestres apagado
+    digitalWrite(led1, HIGH); // LED vermelho para carros
+    digitalWrite(led5, HIGH); // LED verde para pedestres
+
+    // Contagem regressiva
+    for (int i = 8; i >= 0; i--) {
+      mostrarNumero(i);
+      delay(1000);
+    }
+
+    digitalWrite(led5, LOW); // LED verde para pedestres apagado
+    digitalWrite(led4, HIGH); // LED vermelho para pedestres aceso
+    digitalWrite(led1, LOW); // LED vermelho para carros apagado
+  }
+}
+
+void mostrarNumero(int num) {
+  // Tabela de segmentos para cada número (0-9)
+  bool numeros[10][7] = {
+    {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, LOW},  // 0
+    {LOW, HIGH, HIGH, LOW, LOW, LOW, LOW},      // 1
+    {HIGH, HIGH, LOW, HIGH, HIGH, LOW, HIGH},   // 2
+    {HIGH, HIGH, HIGH, HIGH, LOW, LOW, HIGH},   // 3
+    {LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH},    // 4
+    {HIGH, LOW, HIGH, HIGH, LOW, HIGH, HIGH},   // 5
+    {HIGH, LOW, HIGH, HIGH, HIGH, HIGH, HIGH},  // 6
+    {HIGH, HIGH, HIGH, LOW, LOW, LOW, LOW},     // 7
+    {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH}, // 8
+    {HIGH, HIGH, HIGH, HIGH, LOW, HIGH, HIGH}   // 9
+  };
+
+  // Definir os pinos do display de acordo com o número
+  digitalWrite(segA, numeros[num][0]);
+  digitalWrite(segB, numeros[num][1]);
+  digitalWrite(segC, numeros[num][2]);
+  digitalWrite(segD, numeros[num][3]);
+  digitalWrite(segE, numeros[num][4]);
+  digitalWrite(segF, numeros[num][5]);
+  digitalWrite(segG, numeros[num][6]);
+
+  // Atraso para garantir a atualização do display
+  delay(10);
+}
+
+void apagarDisplay() {
+  digitalWrite(segA, LOW);
+  digitalWrite(segB, LOW);
+  digitalWrite(segC, LOW);
+  digitalWrite(segD, LOW);
+  digitalWrite(segE, LOW);
+  digitalWrite(segF, LOW);
+  digitalWrite(segG, LOW);
+}
+
+void testeDisplay() {
+  // Acender todos os segmentos um por um
+  digitalWrite(segA, HIGH);
+  digitalWrite(segB, HIGH);
+  digitalWrite(segC, HIGH);
+  digitalWrite(segD, HIGH);
+  digitalWrite(segE, HIGH);
+  digitalWrite(segF, HIGH);
+  digitalWrite(segG, HIGH);
+  delay(2000); // Mantém todos os segmentos acesos por 2 segundos
+  apagarDisplay();
+}
